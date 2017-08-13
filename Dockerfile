@@ -18,7 +18,8 @@ RUN apt-get clean && apt-get update -y \
     git \
     ca-certificates \
     locales \
-    cabal-install \
+    zlibc zlib1g-dev \
+    haskell-platform  \
     curl
 
 # Install Pandoc and required packages
