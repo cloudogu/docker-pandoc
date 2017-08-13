@@ -4,26 +4,26 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV PANDOC_VERSION "1.19.2.1"
 
 # Install latex and other required packages
-RUN apt-get clean && apt-get update -y \
+RUN set -x \
+  && apt-get clean \
+  && apt-get update -y \
   && apt-get install -y -o Acquire::Retries=10 --no-install-recommends \
-    texlive-latex-base \
-    texlive-xetex latex-xcolor \
-    texlive-math-extra \
-    texlive-latex-extra \
-    texlive-fonts-extra \
-    texlive-bibtex-extra \
+    texlive-full \
     fontconfig \
     lmodern \
     make \
     git \
     ca-certificates \
     locales \
-    zlibc zlib1g-dev \
+    zlibc \
+    zlib1g-dev \
     haskell-platform  \
     curl
 
 # Install Pandoc and required packages
-RUN cabal update && cabal install \
+RUN set -x \
+  && cabal update \
+  && cabal install \
   pandoc-$PANDOC_VERSION \
   pandoc-citeproc \
   pandoc-citeproc-preamble \
@@ -35,6 +35,6 @@ RUN cabal update && cabal install \
 WORKDIR /data
 VOLUME ["/data"]
 
-ENTRYPOINT ["pandoc"]
+ENTRYPOINT ["/root/.cabal/bin/pandoc"]
 
 CMD ["--help"]
