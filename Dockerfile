@@ -1,8 +1,8 @@
 FROM ubuntu:xenial
 MAINTAINER Thomas Grosser <thomas.grosser@cloudogu.com>
 ENV PANDOC_VERSION=1.19.2.1 \
-    TEXLIVE_VERSION=2017
-ENV PATH=/usr/local/texlive/${TEXLIVE_VERSION}/bin/x86_64-linux:$PATH
+    TEXLIVE_VERSION=2017 \
+    PLANTUML_VERSION=1.2017.15
 
 # copy texlive batch installation profile
 COPY resources/texlive.profile .
@@ -32,21 +32,31 @@ RUN set -x \
   && tar xvf install-tl-unx.tar.gz \
   && cd install-tl-* \
   && ./install-tl -profile ../texlive.profile \
+  && cd .. \
 
 # Install Pandoc and required packages
   && cabal update \
-  && cabal install \
+  && cabal install --global \
   pandoc-${PANDOC_VERSION} \
   pandoc-citeproc \
   pandoc-citeproc-preamble \
-  pandoc-crossref
+  pandoc-crossref \
+
+# Install PlantUML
+  && wget http://sourceforge.net/projects/plantuml/files/plantuml.${PLANTUML_VERSION}.jar/download \
+  && mv download /usr/bin/plantuml.jar \
 
 # Install PlantUML filter
-# TODO
+  && git clone https://github.com/jodonoghue/pandoc-plantuml-filter.git \
+  && cd pandoc-plantuml-filter/ \
+  && cabal install --global \
+  && cd ..
+
+ENV PATH=/usr/local/texlive/${TEXLIVE_VERSION}/bin/x86_64-linux:$PATH
 
 WORKDIR /data
 VOLUME ["/data"]
 
-ENTRYPOINT ["/root/.cabal/bin/pandoc"]
+ENTRYPOINT ["pandoc"]
 
 CMD ["--help"]
