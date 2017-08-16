@@ -35,7 +35,7 @@ RUN set -x \
 
 # Install Pandoc and required packages
   && cabal update \
-  && cabal install \
+  && cabal install --global \
   pandoc-${PANDOC_VERSION} \
   pandoc-citeproc \
   pandoc-citeproc-preamble \
@@ -47,6 +47,6 @@ RUN set -x \
 WORKDIR /data
 VOLUME ["/data"]
 
-ENTRYPOINT ["/root/.cabal/bin/pandoc"]
+ENTRYPOINT ["pandoc"]
 
 CMD ["--help"]
