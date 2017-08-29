@@ -49,3 +49,7 @@ RUN set -x \
 WORKDIR /data
 VOLUME ["/data"]
 
+ENTRYPOINT ["pandoc"]
+
+CMD ["--help"]
+

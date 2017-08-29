@@ -13,4 +13,4 @@ installed. It can be used to generate PDF from markdown.
 
 ## Usage
 
-View all pandoc options with `docker run cloudogu/pandoc`. An example for usage can be found here [pandoc_example](https://github.com/cloudogu/pandoc_example)
+View all pandoc options with `docker run cloudogu/pandoc`.
