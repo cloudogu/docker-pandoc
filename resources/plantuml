@@ -3,14 +3,13 @@ set -iex
 
 # read plantuml syntax from stdin
 while read x ; do PUML=${PUML}$'\n'$x ; done
-PUML=${PUML}$'\n'"@enduml"
 
 # encode plantuml syntax into image URL
-PNGURL=$(curl ${PLANTUML_SERVER}/plantuml/form -d text="${PUML}" -v 2>&1 | grep Location | awk '{print $NF}' | sed 's/\/uml\//\/png\//') 
+SVGURL=$(curl ${PLANTUML_SERVER}/plantuml/form -d text="${PUML}" -v 2>&1 | grep Location | awk '{print $NF}' | sed 's/\/uml\//\/svg\//') 
 
 # remove trailing linefeed
-PNGURL=${PLANTUML_SERVER}${PNGURL%$'\r'} 
+SVGURL=${PLANTUML_SERVER}${SVGURL%$'\r'} 
 
 # get UML image from server
-curl ${PNGURL}
+curl ${SVGURL}
 
