@@ -27,7 +27,7 @@ RUN set -x \
     wget \
     curl
 
-# install texlive
+# Install texlive
 RUN set -x \
   && wget ftp://tug.org/historic/systems/texlive/${TEXLIVE_VERSION}/install-tl-unx.tar.gz \
   && tar xvf install-tl-unx.tar.gz \
@@ -38,6 +38,9 @@ RUN set -x \
   && rm -R install-tl-* 
 
 ENV PATH=/usr/local/texlive/${TEXLIVE_VERSION}/bin/x86_64-linux:$PATH
+
+# Update the default font map files
+RUN updmap -sys
 
 # Install Pandoc and required packages
 RUN set -x \
