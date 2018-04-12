@@ -4,12 +4,15 @@ set -iex
 # read plantuml syntax from stdin
 while read x ; do PUML=${PUML}$'\n'$x ; done
 
+# write plantuml to file
+echo ${PUML} > diagram.puml
+
 # encode plantuml syntax into image URL
-SVGURL=$(curl ${PLANTUML_SERVER}/plantuml/form -d text="${PUML}" -v 2>&1 | grep Location | awk '{print $NF}' | sed 's/\/uml\//\/svg\//') 
+EPSURL=$(curl ${PLANTUML_SERVER}/plantumlproxy?src=diagram.puml&fmt=eps 
 
 # remove trailing linefeed
-SVGURL=${PLANTUML_SERVER}${SVGURL%$'\r'} 
+EPSURL=${PLANTUML_SERVER}${EPSURL%$'\r'} 
 
 # get UML image from server
-curl ${SVGURL}
+curl ${EPSURL}
 
