@@ -8,11 +8,10 @@ while read x ; do PUML=${PUML}$'\n'$x ; done
 echo ${PUML} > diagram.puml
 
 # encode plantuml syntax into image URL
-EPSURL=$(curl ${PLANTUML_SERVER}/plantumlproxy?src=diagram.puml&fmt=eps 
+EPSURL=$(curl ${PLANTUML_SERVER}/plantuml/proxy?src=diagram.puml&fmt=eps 
 
 # remove trailing linefeed
 EPSURL=${PLANTUML_SERVER}${EPSURL%$'\r'} 
 
 # get UML image from server
 curl ${EPSURL}
-
