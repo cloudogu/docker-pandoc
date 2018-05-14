@@ -1,4 +1,6 @@
 # docker-pandoc
+[![](https://images.microbadger.com/badges/image/cloudogu/pandoc.svg)](https://hub.docker.com/r/cloudogu/pandoc/)
+[![](https://images.microbadger.com/badges/version/cloudogu/pandoc.svg)](https://hub.docker.com/r/cloudogu/pandoc/)
 
 A docker container with
 
