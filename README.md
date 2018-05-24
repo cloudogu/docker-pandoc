@@ -16,3 +16,7 @@ installed. It can be used to generate PDF from markdown.
 ## Usage
 
 View all pandoc options with `docker run cloudogu/pandoc`.
+
+## Examples
+
+* [cloudogu/docker-doc_template](https://github.com/cloudogu/docker-doc_template) - An example for generating PDF from Markdown 
