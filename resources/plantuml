@@ -20,7 +20,7 @@ fi
 # define PUML
 PUML=""
 
-# read plantuml syntax from stdin
+# read plantuml syntax from stdin and respect the last line
 while read line || [ -n "${line}" ]; do PUML=${PUML}$'\n'${line} ; done
 
 # remove leading whitespace characters
@@ -28,10 +28,12 @@ PUML="${PUML#"${PUML%%[![:space:]]*}"}"
 # remove trailing whitespace characters
 PUML="${PUML%"${PUML##*[![:space:]]}"}"
 
+# add @startuml tag if it is missing in the input
 if [[ "${PUML}" != @startuml* ]]; then
    PUML=@startuml$'\n'${PUML}
 fi
 
+# append @enduml tag if it is missing in the input
 if [[ "${PUML}" != *@enduml ]]; then
    PUML=${PUML}$'\n'"@enduml"
 fi
