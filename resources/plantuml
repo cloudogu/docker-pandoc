@@ -21,7 +21,7 @@ fi
 PUML=""
 
 # read plantuml syntax from stdin
-while read x ; do PUML=${PUML}$'\n'$x ; done
+while read line || [ -n "${line}" ]; do PUML=${PUML}$'\n'${line} ; done
 
 # remove leading whitespace characters
 PUML="${PUML#"${PUML%%[![:space:]]*}"}"
