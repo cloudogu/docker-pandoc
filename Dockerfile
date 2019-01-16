@@ -1,13 +1,14 @@
 FROM ubuntu:xenial
 MAINTAINER Thomas Grosser <thomas.grosser@cloudogu.com>
 ENV PANDOC_VERSION=1.19.2.1 \
-    TEXLIVE_VERSION=2017 \
+    TEXLIVE_VERSION=2018 \
     PLANTUML_URL=https://ecosystem.cloudogu.com/plantuml
 
 # copy texlive batch installation profile
 COPY resources/texlive.profile .
 
 # Install latex, PlantUML filter and other required packages
+# we need ghostscript in order to convert eps images
 RUN set -x \
   && apt-get clean \
   && apt-get update -y \
@@ -25,7 +26,8 @@ RUN set -x \
     zlib1g-dev \
     haskell-platform \
     wget \
-    curl
+    curl \
+    ghostscript
 
 # Install texlive
 RUN set -x \
@@ -37,7 +39,8 @@ RUN set -x \
   && rm texlive.profile \
   && rm -R install-tl-* 
 
-ENV PATH=/usr/local/texlive/${TEXLIVE_VERSION}/bin/x86_64-linux:$PATH
+# installed texlive version is 2018, but the path uses still 2017
+ENV PATH=/usr/local/texlive/2017/bin/x86_64-linux:$PATH
 
 # Update the default font map files
 RUN updmap -sys
@@ -53,7 +56,7 @@ RUN set -x \
 
 # Install PlantUML filter
 RUN set -x \
-  && git clone https://github.com/jodonoghue/pandoc-plantuml-filter.git \
+  && git clone https://github.com/cloudogu/pandoc-plantuml-filter.git \
   && cd pandoc-plantuml-filter/ \
   && cabal install --global
 
@@ -63,7 +66,7 @@ RUN set -x \
   && chmod +x /pandoc-plantuml-filter/scripts/plantuml
 
 ENV PATH=/pandoc-plantuml-filter/scripts:$PATH
-  
+
 WORKDIR /data
 VOLUME ["/data"]
 
