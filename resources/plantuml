@@ -22,7 +22,19 @@ PUML=""
 
 # read plantuml syntax from stdin
 while read x ; do PUML=${PUML}$'\n'$x ; done
-PUML=${PUML}$'\n'"@enduml"
+
+# remove leading whitespace characters
+PUML="${PUML#"${PUML%%[![:space:]]*}"}"
+# remove trailing whitespace characters
+PUML="${PUML%"${PUML##*[![:space:]]}"}"
+
+if [[ "${PUML}" != @startuml* ]]; then
+   PUML=@startuml$'\n'${PUML}
+fi
+
+if [[ "${PUML}" != *@enduml ]]; then
+   PUML=${PUML}$'\n'"@enduml"
+fi
 
 # encode plantuml syntax into image URL
 IMGURL=$(curl --silent ${PLANTUML_SERVER}/plantuml/form -d text="${PUML}" -v 2>&1 | grep Location | awk '{print $NF}' | sed 's/\/uml\//\/eps\//') 
